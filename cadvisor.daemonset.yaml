@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cadvisor
+  namespace: kube-system
+  labels:
+    app: cadvisor
+spec:
+  selector:
+    matchLabels:
+      name: cadvisor
+  template:
+    metadata:
+      labels:
+        name: cadvisor
+    spec:
+      containers:
+        - name: cadvisor
+          image: google/cadvisor:latest
+          volumeMounts:
+            - name: postgres
+              mountPath:  /var/lib/postgresql/data
+            - name: varlibdockercontainers
+              mountPath: /var/lib/docker/containers
+              readOnly: true
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: postgres
+          hostPath:
+            path: /var/lib/postgresql/data
+        - name: varlibdockercontainers
+          hostPath:
+            path: /var/lib/docker/containers
