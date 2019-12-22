@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis-deployment
+  name: redis
 spec:
   selector:
     matchLabels:
@@ -12,7 +12,10 @@ spec:
         app: redis
     spec:
       containers:
-        - name: redis-deployment
+        - name: redis
           image: redis:5.0
           ports:
             - containerPort: 6379
+          envFrom:
+            - configMapRef:
+                name: redis-configmap

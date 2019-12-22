@@ -5,5 +5,5 @@ metadata:
   labels:
     app: redis
 data:
-  redis.conf: |
-    port 6379
+  key: |
+    REDIS_HOST = redis.default.svc.cluster.local
