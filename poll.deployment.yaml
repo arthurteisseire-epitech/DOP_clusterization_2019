@@ -1,0 +1,33 @@
+apiVersion: apps/v1           # API version
+kind: Deployment              # Type of kubernetes resource
+metadata:
+  name: polling-app-server    # Name of the kubernetes resource
+  labels:                     # Labels that will be applied to this resource
+    app: polling-app-server
+spec:
+  replicas: 1                 # No. of replicas/pods to run in this deployment
+  selector:
+    matchLabels:              # The deployment applies to any pods mayching the specified labels
+      app: polling-app-server
+  template:                   # Template for creating the pods in this deployment
+    metadata:
+      labels:                 # Labels that will be applied to each Pod in this deployment
+        app: polling-app-server
+    spec:                     # Spec for the containers that will be run in the Pods
+      restartPolicy: Always
+      containers:
+        - name: polling-app-server
+          image: epitechcontent/t-dop-600-poll:claimk8s
+          env:
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-configmap
+                  key: REDIS_HOST
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80 # The port that the container exposes
+          resources:
+            limits:
+              memory: "128Mi"

@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: result
+  namespace: kube-system
+spec:
+  rules:
+    - host: result
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: result
+              servicePort: web

@@ -14,20 +14,18 @@ spec:
       labels:
         name: cadvisor
     spec:
+      restartPolicy: Always
       containers:
         - name: cadvisor
           image: google/cadvisor:latest
           volumeMounts:
-            - name: postgres
-              mountPath:  /var/lib/postgresql/data
             - name: varlibdockercontainers
               mountPath: /var/lib/docker/containers
               readOnly: true
+          ports:
+            - containerPort: 8080
       terminationGracePeriodSeconds: 30
       volumes:
-        - name: postgres
-          hostPath:
-            path: /var/lib/postgresql/data
         - name: varlibdockercontainers
           hostPath:
             path: /var/lib/docker/containers
